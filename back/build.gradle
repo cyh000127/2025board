@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    // Spring Boot 플러그인 (기존 'war' 플러그인 대체)
+    // 3.3.0은 Java 17+를 필요로 하는 안정적인 최신 버전입니다.
+    id 'org.springframework.boot' version '3.3.0'
+    // Spring의 의존성 관리 플러그인 (라이브러리 버전 자동 관리)
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.study.mvc'
+version = '1.0-SNAPSHOT'
+
+// Java 17 설정
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Spring Boot의 BOM(Bill of Materials)이 관리하지 않는 라이브러리 버전만 따로 정의
+ext {
+    jjwtVersion = '0.11.5'          // JWT
+    mybatisVersion = '3.0.3'      // MyBatis Spring Boot Starter
+    p6spyVersion = '1.9.1'        // SQL 로거 (log4jdbc 대체)
+}
+
+dependencies {
+    // --- 1. Spring Boot Starters (핵심 의존성) ---
+
+    // (Replaces spring-webmvc, jackson-databind, 내장 Tomcat 서버 포함)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // (Replaces spring-security-web, -config, -core)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // (Replaces spring-tx, spring-jdbc, HikariCP)
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // (Replaces aspectjrt, aspectjweaver) - @Transactional 등을 위해 필요
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // (Replaces mybatis, mybatis-spring)
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisVersion}"
+
+    // (Replaces junit, spring-test)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // --- 2. Database & SQL Logging ---
+    // MySQL 드라이버 (버전은 Spring Boot BOM이 관리)
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // (log4jdbc의 최신 대체제) - SQL 쿼리를 예쁘게 로깅
+    // application.properties에서 바로 설정 가능 (별도 XML 불필요)
+    implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:${p6spyVersion}"
+
+    // --- 3. 기존 Third-Party 라이브러리 ---
+
+    // Lombok (버전은 Spring Boot BOM이 관리)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // JWT (버전은 'ext' 블록에서 관리)
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+
+}
+
+// JUnit 5 테스트 설정 (기존과 동일)
+tasks.named('test') {
+    useJUnitPlatform()
+}

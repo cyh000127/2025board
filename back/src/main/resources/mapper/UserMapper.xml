@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.mvc.myboard.mapper.UserMapper">
+
+    <insert id="insertUser" parameterType="com.study.mvc.myboard.dto.UserDTO">
+        INSERT INTO tbl_member (username, password, email, name, mbti, reg_date)
+
+        VALUES (#{username}, #{password}, #{email}, #{name}, #{mbti}, NOW())
+    </insert>
+
+    <select id="findByUsername" parameterType="String" resultType="com.study.mvc.myboard.dto.UserDTO">
+        SELECT * FROM tbl_member WHERE username = #{username}
+    </select>
+
+    <select id="findAll" resultType="com.study.mvc.myboard.dto.UserDTO">
+        SELECT * FROM tbl_member
+    </select>
+</mapper>

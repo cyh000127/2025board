@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.mvc.myboard.mapper.BoardMapper">
+
+    <select id="findAll" resultType="com.study.mvc.myboard.dto.BoardDTO">
+        SELECT * FROM tbl_board ORDER BY reg_date DESC
+    </select>
+
+    <select id="findByNo" parameterType="long" resultType="com.study.mvc.myboard.dto.BoardDTO">
+        SELECT * FROM tbl_board WHERE no = #{no}
+    </select>
+
+    <insert id="insertBoard" parameterType="com.study.mvc.myboard.dto.BoardDTO">
+        INSERT INTO tbl_board (title, content, writer)
+        VALUES (#{title}, #{content}, #{writer})
+    </insert>
+
+    <update id="updateBoard" parameterType="com.study.mvc.myboard.dto.BoardDTO">
+        UPDATE tbl_board
+        SET title = #{title}, content = #{content}, update_date = NOW()
+        WHERE no = #{no}
+    </update>
+
+    <delete id="deleteBoard" parameterType="long">
+        DELETE FROM tbl_board WHERE no = #{no}
+    </delete>
+</mapper>
