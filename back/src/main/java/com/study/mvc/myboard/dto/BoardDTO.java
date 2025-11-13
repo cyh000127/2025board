@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDTO {
-    private Long no;
-    private String title;
-    private String content;
-    private String writer;
-    private LocalDateTime reg_date;
-    private LocalDateTime update_date;
+    private Long no; // 게시글 번호
+    private String title; // 제목
+    private String content; // 내용
+    private String writer; // 작성자
+    private LocalDateTime reg_date; // 게시일
+    private LocalDateTime update_date; // 수정일
 }

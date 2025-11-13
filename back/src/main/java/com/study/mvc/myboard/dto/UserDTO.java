@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+//lombok
+@NoArgsConstructor // 기본 생성자 자동 생성
+@AllArgsConstructor // 모든 필드를 받는 생성자 생성
 public class UserDTO {
     private String username;      // 아이디 (PK)
     private String password;      // 비밀번호

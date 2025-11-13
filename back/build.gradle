@@ -1,9 +1,8 @@
 plugins {
     id 'java'
     // Spring Boot 플러그인 (기존 'war' 플러그인 대체)
-    // 3.3.0은 Java 17+를 필요로 하는 안정적인 최신 버전입니다.
     id 'org.springframework.boot' version '3.3.0'
-    // Spring의 의존성 관리 플러그인 (라이브러리 버전 자동 관리)
+    // Spring의 의존성 관리
     id 'io.spring.dependency-management' version '1.1.5'
 }
 
@@ -19,15 +18,14 @@ repositories {
     mavenCentral()
 }
 
-// Spring Boot의 BOM(Bill of Materials)이 관리하지 않는 라이브러리 버전만 따로 정의
 ext {
-    jjwtVersion = '0.11.5'          // JWT
+    jjwtVersion = '0.11.5'        // JWT
     mybatisVersion = '3.0.3'      // MyBatis Spring Boot Starter
     p6spyVersion = '1.9.1'        // SQL 로거 (log4jdbc 대체)
 }
 
 dependencies {
-    // --- 1. Spring Boot Starters (핵심 의존성) ---
+    // --- 1. Spring Boot Starters  ---
 
     // (Replaces spring-webmvc, jackson-databind, 내장 Tomcat 서버 포함)
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -63,14 +61,14 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // JWT (버전은 'ext' 블록에서 관리)
+    // JWT
     implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
 }
 
-// JUnit 5 테스트 설정 (기존과 동일)
+// JUnit 5 테스트 설정
 tasks.named('test') {
     useJUnitPlatform()
 }
