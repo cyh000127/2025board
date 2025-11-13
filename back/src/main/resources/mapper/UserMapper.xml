@@ -5,17 +5,36 @@
 
 <mapper namespace="com.study.mvc.myboard.mapper.UserMapper">
 
+    <!--  회원가입 -->
     <insert id="insertUser" parameterType="com.study.mvc.myboard.dto.UserDTO">
-        INSERT INTO tbl_member (username, password, email, mbti, reg_date)
-
-        VALUES (#{username}, #{password}, #{email}, #{mbti}, NOW())
+        INSERT INTO tbl_member (id, password, email, name)
+        VALUES (#{id}, #{password}, #{email}, #{name})
     </insert>
 
-    <select id="findByUsername" parameterType="String" resultType="com.study.mvc.myboard.dto.UserDTO">
-        SELECT * FROM tbl_member WHERE username = #{username}
+    <!-- 회원가입 시 기본 권한(ROLE_USER) 삽입 -->
+    <insert id="insertUserAuth">
+        INSERT INTO tbl_member_auth (id, auth)
+        VALUES (#{id}, #{auth})
+    </insert>
+
+    <!-- id 찾기 -->
+    <select id="findById" parameterType="String" resultType="com.study.mvc.myboard.dto.UserDTO">
+        SELECT * FROM tbl_member WHERE id = #{id}
+    </select>
+
+    <!--id로 권한 조회 -->
+    <select id="readAuth" parameterType="String" resultType="String">
+        SELECT auth FROM tbl_member_auth WHERE id = #{id}
     </select>
 
     <select id="findAll" resultType="com.study.mvc.myboard.dto.UserDTO">
         SELECT * FROM tbl_member
     </select>
+
+    <!-- 회원 탈퇴 (Soft Delete) -->
+    <update id="deleteUser" parameterType="String">
+        UPDATE tbl_member
+        SET status = 'DELETED', update_date = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -7,36 +7,39 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    @Autowired
-    private final UserMapper userMapper;
 
+    // 회원가입
     @PostMapping("/register")
-    public String register(@RequestBody UserDTO user) {
-        boolean success = userService.register(user);
-        System.out.println("회원가입 성공");
-        return success ? "회원가입 성공!" : "이미 존재하는 아이디입니다.";
+    public String registerUser(@RequestBody UserDTO user) {
+        // DTO에는 id, password, email, name 4개가 넘어옴
+        return userService.registerUser(user) ? "회원가입 성공" : "회원가입 실패";
     }
 
-    @GetMapping("/{username}")
-    public UserDTO getUser(@PathVariable String username) {
-        return userService.findByUsername(username);
+    // 회원 정보 조회 (id로 조회)
+    @GetMapping("/{id}")
+    public UserDTO getUser(@PathVariable String id) {
+        // 로그인 및 상태(status) 확인 로직은 Spring Security가 처리 (가정)
+        return userService.getUser(id);
     }
 
-//    @GetMapping("/test-db")
-//    public String testDB() {
-//        try {
-//            userMapper.findAll(); // UserMapper.xml에 간단한 select문 필요
-//            return "✅ DB 연결 성공!";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "❌ DB 연결 실패: " + e.getMessage();
-//        }
+    // 회원 탈퇴 (Soft Delete)
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable String id) {
+        // (가정) Spring Security에서 본인 확인 또는 관리자 확인
+        return userService.deleteUser(id) ? "회원 탈퇴 성공" : "회원 탈퇴 실패";
     }
 
-
+    //  전체 회원 목록
+    @GetMapping("/list")
+    public List<UserDTO> getUserList() {
+        return userService.getUserList();
+    }
+}

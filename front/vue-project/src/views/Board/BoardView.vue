@@ -23,8 +23,8 @@
 import { ref, onMounted } from 'vue'
 import Header from '../../components/Header.vue' 
 import Footer from '../../components/Footer.vue' 
-import BoardItem from './BoardItem.vue' // 경로는 맞는지 확인
-import { getBoardList } from '../../api/boardApi' // 경로는 맞는지 확인
+import BoardItem from './BoardItem.vue' 
+import { getBoardList } from '../../api/boardApi' 
 
 const boardList = ref([])
 

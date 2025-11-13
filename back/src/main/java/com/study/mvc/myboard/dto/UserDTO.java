@@ -5,16 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-//lombok
-@NoArgsConstructor // 기본 생성자 자동 생성
-@AllArgsConstructor // 모든 필드를 받는 생성자 생성
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
-    private String username;      // 아이디 (PK)
-    private String password;      // 비밀번호
-    private String email;         // 이메일
-    private String mbti;          // MBTI
-    private LocalDateTime regDate;     // 가입일
-    private LocalDateTime updateDate;  // 수정일
+    private String id;  //id
+    private String password; // pw
+    private String email; // 이메일
+    private String name; // 이름
+
+    //  'status' 컬럼
+    private String status; // "ACTIVE", "DELETED", "BANNED"
+
+    private LocalDateTime reg_date;
+    private LocalDateTime update_date;
+
+    // 권한 정보를 담을 리스트 (tbl_member_auth)
+    private List<String> authList;
 }
